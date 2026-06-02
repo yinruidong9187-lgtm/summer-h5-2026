@@ -11,11 +11,18 @@
 @import url('https://unpkg.com/common_word_font@1.0.10/alibaba-puhuiti/stylesheetforall.css');
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:#FFFFFF}
+body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:#F8FBFD}
 
-/* 背景纹理 */
+/* ===== 背景层：固定画布 + 呼吸动画 ===== */
 .bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,215,225,0.05) 3px,rgba(200,215,225,0.05) 4px)}
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,215,225,0.05) 3px,rgba(200,215,225,0.05) 4px);
+  animation:bgBreath 24s ease-in-out infinite}
+@keyframes bgBreath{
+  0%,100%{background-color:#F8FBFD;filter:hue-rotate(0deg)}
+  25%{background-color:#F5F9FC;filter:hue-rotate(5deg)}
+  50%{background-color:#FCF8F9;filter:hue-rotate(12deg)}
+  75%{background-color:#F8FBFD;filter:hue-rotate(5deg)}
+}
 
 /* 进度条 */
 .bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:999;background:rgba(0,0,0,0.04)}
@@ -26,7 +33,7 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
 
 /* 每段 */
 .sec{padding:44px 28px;position:relative;display:flex;flex-direction:column;align-items:center;
-  opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s cubic-bezier(.25,.46,.45,.94)}
 .sec.in{opacity:1;transform:translateY(0)}
 
 /* 滚入展开 */
@@ -34,9 +41,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
 .exp.on{max-height:600px;opacity:1}
 
 /* 锚点 */
-.a{font-weight:900;line-height:1;letter-spacing:-.02em;text-align:center}
+.a{font-weight:900;line-height:1;letter-spacing:-.02em;text-align:center;will-change:transform}
 .a.v{writing-mode:vertical-rl;letter-spacing:.12em;line-height:1.4}
-.a.w{position:absolute;font-weight:900;opacity:.035;pointer-events:none;letter-spacing:.05em}
+.a.w{position:absolute;font-weight:900;opacity:.035;pointer-events:none;letter-spacing:.05em;will-change:transform}
 
 /* 颜色体系 — 蓝绿为主，粉黄紫为辅 */
 .c1{color:#1B6B5A}
@@ -62,29 +69,22 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
 .c-lime{color:#84CC16}
 
 /* ===== 字体类 ===== */
-/* 站酷小薇体 — 文艺引文 */
 .f-xw{font-family:'ZCOOL XiaoWei','Noto Serif SC',serif}
-/* 站酷庆科黄油体 — 圆润活泼 */
 .f-hy{font-family:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif}
-/* 站酷快乐体 — 轻松可爱 */
 .f-kl{font-family:'ZCOOL KuaiLe','Noto Sans SC',sans-serif}
-/* 霞鹜文楷 — 古典楷书 */
 .f-wk{font-family:'LXGW WenKai','Noto Serif SC',serif}
-/* 思源宋体 — 优雅衬线 */
 .f-ss{font-family:'Noto Serif SC',Georgia,serif}
-/* 思源黑体 — 干净正文 */
 .f-sn{font-family:'Noto Sans SC','Alibaba PuHuiTi 2.0',sans-serif}
-/* 阿里巴巴普惠体 — 现代标题（默认字体，不需额外class） */
 
 .tag{font-size:11px;letter-spacing:3px;opacity:.3;text-align:center;margin-bottom:8px}
 .b{font-size:clamp(13px,3.5vw,15px);font-weight:300;line-height:2;opacity:.55;text-align:center;max-width:340px}
 .strike{text-decoration:line-through;opacity:.3}
 .bold{font-weight:700}
 
-/* 插画元素 */
-.illust{font-size:clamp(48px,14vw,80px);line-height:1;text-align:center;margin:8px 0}
-.illust-sm{font-size:clamp(28px,8vw,44px);line-height:1;text-align:center}
-.deco{display:flex;gap:4px;justify-content:center;margin:8px 0}
+/* 插画元素 — 中景层，will-change保证GPU加速 */
+.illust{font-size:clamp(48px,14vw,80px);line-height:1;text-align:center;margin:8px 0;will-change:transform}
+.illust-sm{font-size:clamp(28px,8vw,44px);line-height:1;text-align:center;will-change:transform}
+.deco{display:flex;gap:4px;justify-content:center;margin:8px 0;will-change:transform}
 .deco span{display:inline-block;border-radius:2px;opacity:.15}
 </style>
 </head>
@@ -93,18 +93,18 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
 <div class="bar"><i id="bar"></i></div>
 <div class="wrap">
 
-<!-- ===== 封面 ===== 阿里巴巴普惠体 -->
+<!-- ===== 封面 ===== -->
 <div class="sec" data-s="0" style="min-height:70vh;justify-content:center">
-  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:-5%;left:50%;transform:translateX(-50%)" data-py=".3">夏天是</div>
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:-5%;left:50%;transform:translateX(-50%)" data-py=".8">夏天是</div>
   <div class="a c2" style="font-size:clamp(80px,24vw,180px);letter-spacing:.06em">
     <span style="color:#1ABC9C">夏</span><span style="color:#3A98B9">天</span><span style="color:#A78BFA">是</span>
   </div>
   <div class="tag c4" style="opacity:.2;margin-top:28px">一部没有片尾字幕的电影</div>
 </div>
 
-<!-- ===== 西瓜 ===== 阿里巴巴普惠体 -->
+<!-- ===== 西瓜 ===== -->
 <div class="sec" data-s="1">
-  <div class="illust">🍉</div>
+  <div class="illust" data-speed=".3">🍉</div>
   <div class="a c5" style="font-size:clamp(32px,9vw,60px);margin:4px 0">
     夏天是<br>切开西瓜<span class="bold">刀锋偏了一度</span>
   </div>
@@ -113,7 +113,7 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 空调 ===== 站酷小薇体 -->
+<!-- ===== 空调 ===== -->
 <div class="sec" data-s="2">
   <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px">
     <div class="a c3" style="font-size:clamp(60px,18vw,140px);line-height:1">22</div>
@@ -128,11 +128,11 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 冰可乐 ===== 站酷快乐体 -->
+<!-- ===== 冰可乐 ===== -->
 <div class="sec" data-s="3" style="flex-direction:row;gap:16px;align-items:center">
   <div class="a v c8 f-kl" style="font-size:clamp(20px,6vw,36px);letter-spacing:.15em">冰可乐</div>
   <div>
-    <div class="illust-sm" style="text-align:left">🥤</div>
+    <div class="illust-sm" data-speed=".4" style="text-align:left">🥤</div>
     <div class="a c-sky" style="font-size:clamp(20px,5.5vw,32px);text-align:left;line-height:1.5;margin:4px 0">
       夏天是第一口气泡<span class="bold">炸开</span>
     </div>
@@ -142,22 +142,22 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 穿搭 ===== 站酷庆科黄油体 -->
+<!-- ===== 穿搭 ===== -->
 <div class="sec" data-s="4">
   <div style="font-size:clamp(12px,3.2vw,14px);opacity:.2;text-decoration:line-through;color:#A78BFA">出门前纠结穿什么</div>
   <div class="a c-pink f-hy" style="font-size:clamp(36px,10vw,72px);margin:4px 0">
     夏天是<br>出门后<span class="bold">所有人都穿得很随便</span>
   </div>
-  <div class="illust-sm" style="margin-top:4px">👕🩳🩴</div>
+  <div class="illust-sm" data-speed=".35" style="margin-top:4px">👕🩳🩴</div>
   <div class="exp">
     <div class="b f-sn">像《小偷家族》里那场烟花<br>没有人看见，但每个人都听见了</div>
   </div>
 </div>
 
-<!-- ===== 午睡 ===== 霞鹜文楷 -->
+<!-- ===== 午睡 ===== -->
 <div class="sec" data-s="5">
-  <div class="a w c-sky" style="font-size:clamp(100px,28vw,240px);top:10%;left:50%;transform:translateX(-50%);opacity:.05" data-py=".1">15:47</div>
-  <div class="illust-sm">😴</div>
+  <div class="a w c-sky" style="font-size:clamp(100px,28vw,240px);top:10%;left:50%;transform:translateX(-50%);opacity:.05" data-py=".6">15:47</div>
+  <div class="illust-sm" data-speed=".25">😴</div>
   <div class="a c-lavender f-wk" style="font-size:clamp(24px,7vw,44px);line-height:1.5">
     夏天是<br>午觉醒来<span class="bold">分不清下午还是黄昏</span>
   </div>
@@ -166,12 +166,12 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 蝉鸣 ===== 阿里巴巴普惠体 -->
+<!-- ===== 蝉鸣 ===== -->
 <div class="sec" data-s="6">
-  <div class="a w c2" style="font-size:clamp(160px,45vw,360px);top:-5%;left:-15%;transform:rotate(-12deg)" data-py=".4">鸣</div>
-  <div style="display:flex;gap:6px;margin-bottom:8px">
+  <div class="a w c2" style="font-size:clamp(160px,45vw,360px);top:-5%;left:-15%;transform:rotate(-12deg)" data-py=".7">鸣</div>
+  <div class="illust" data-speed=".2" style="font-size:0;display:flex;gap:6px;margin-bottom:8px">
     <span style="font-size:clamp(14px,3.8vw,18px)">🦗</span>
-    <span style="font-size:clamp(10px,2.8vw,13px);opacity:.3;color:#2E8B7A;letter-spacing:3px">CHIRPING</span>
+    <span style="font-size:clamp(10px,2.8vw,13px);opacity:.3;color:#2E8B7A;letter-spacing:3px;line-height:1.6">CHIRPING</span>
     <span style="font-size:clamp(14px,3.8vw,18px)">🦗</span>
   </div>
   <div class="a c1" style="font-size:clamp(28px,8vw,52px);line-height:1.3">
@@ -183,9 +183,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 晚风 ===== 站酷小薇体 -->
+<!-- ===== 晚风 ===== -->
 <div class="sec" data-s="7">
-  <div class="illust">🌬️🍃</div>
+  <div class="illust" data-speed=".3">🌬️🍃</div>
   <div class="a c-mint f-xw" style="font-size:clamp(22px,6vw,36px);line-height:1.6">
     夏天是<br>晚风吹过来<br>你突然想给<span class="bold">很久没联系的人</span><br>发一条消息
   </div>
@@ -195,10 +195,10 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 夜市 ===== 站酷庆科黄油体 -->
+<!-- ===== 夜市 ===== -->
 <div class="sec" data-s="8">
-  <div class="a w c7" style="font-size:clamp(180px,50vw,400px);top:5%;left:50%;transform:translateX(-50%);opacity:.02" data-py=".35">市</div>
-  <div class="illust">🏮🍢🧋</div>
+  <div class="a w c7" style="font-size:clamp(180px,50vw,400px);top:5%;left:50%;transform:translateX(-50%);opacity:.02" data-py=".75">市</div>
+  <div class="illust" data-speed=".25">🏮🍢🧋</div>
   <div class="a c-yellow f-hy" style="font-size:clamp(26px,7.5vw,48px);line-height:1.4">
     夏天是<br>夜市的灯光<span class="bold">把影子拉得很长</span>
   </div>
@@ -207,12 +207,12 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 四季 ===== 阿里巴巴普惠体 -->
+<!-- ===== 四季 ===== -->
 <div class="sec" data-s="9">
   <div style="text-align:center">
     <div class="tag c2" style="letter-spacing:5px;font-size:clamp(12px,3.2vw,15px);opacity:.18">春 天 在 准 备</div>
     <div class="tag c2" style="letter-spacing:5px;font-size:clamp(12px,3.2vw,15px);opacity:.18;margin-top:4px">秋 天 在 收 尾</div>
-    <div class="illust-sm" style="margin:8px 0">🌱</div>
+    <div class="illust-sm" data-speed=".3" style="margin:8px 0">🌱</div>
     <div class="a c6" style="font-size:clamp(30px,9vw,60px)">夏天是<span class="bold">活着</span></div>
   </div>
   <div class="exp">
@@ -220,9 +220,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 热 ===== 站酷庆科黄油体 -->
+<!-- ===== 热 ===== -->
 <div class="sec" data-s="10">
-  <div class="illust">🥵☀️</div>
+  <div class="illust" data-speed=".2">🥵☀️</div>
   <div class="a c-peach f-hy" style="font-size:clamp(28px,8vw,52px);line-height:1.3">
     夏天是<br>热到<span class="strike">连思考都是奢侈</span>
   </div>
@@ -232,7 +232,7 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 没有结局 ===== 霞鹜文楷 -->
+<!-- ===== 没有结局 ===== -->
 <div class="sec" data-s="11" style="flex-direction:row;gap:20px;align-items:center">
   <div class="a v c6 f-wk" style="font-size:clamp(18px,5.5vw,34px);letter-spacing:.12em;line-height:1.6">没有结局的电影</div>
   <div>
@@ -245,11 +245,11 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 以你的名字呼唤我 ===== 站酷小薇体 -->
+<!-- ===== 以你的名字呼唤我 ===== -->
 <div class="sec" data-s="12">
-  <div class="a w c5" style="font-size:clamp(100px,28vw,220px);top:0;right:-15%;opacity:.035;transform:rotate(5deg)" data-py=".2">夏</div>
+  <div class="a w c5" style="font-size:clamp(100px,28vw,220px);top:0;right:-15%;opacity:.035;transform:rotate(5deg)" data-py=".65">夏</div>
   <div class="tag f-wk" style="color:#A78BFA;letter-spacing:3px">SUMMER · ITALY</div>
-  <div class="illust">🍑🏊‍♂️🚴</div>
+  <div class="illust" data-speed=".3">🍑🏊‍♂️🚴</div>
   <div class="a c-pink-soft f-xw" style="font-size:clamp(24px,7vw,44px);line-height:1.5">
     夏天是<br>桃子汁水顺着手指往下淌<br><span class="strike">你假装没注意到</span>
   </div>
@@ -259,9 +259,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 莎翁 ===== 霞鹜文楷 + 思源宋体 -->
+<!-- ===== 莎翁 ===== -->
 <div class="sec" data-s="13">
-  <div class="illust" style="font-size:clamp(36px,10vw,64px)">✉️🪶</div>
+  <div class="illust" data-speed=".25" style="font-size:clamp(36px,10vw,64px)">✉️🪶</div>
   <div class="tag c4" style="letter-spacing:4px;opacity:.12">SHAKESPEARE · SONNET 18</div>
   <div class="f-ss" style="font-size:clamp(15px,4.2vw,20px);line-height:2;color:#1A3A5C;opacity:.65;text-align:center;max-width:320px">
     夏天怎能与你相比<br>你比夏天更可爱也更温和
@@ -274,9 +274,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 想去海边 ===== 站酷快乐体 -->
+<!-- ===== 想去海边 ===== -->
 <div class="sec" data-s="14">
-  <div class="illust" style="font-size:clamp(40px,12vw,72px)">🌊🤖🏖️</div>
+  <div class="illust" data-speed=".2" style="font-size:clamp(40px,12vw,72px)">🌊🤖🏖️</div>
   <div class="a c-sky f-kl" style="font-size:clamp(36px,10vw,72px);line-height:1.1">
     夏天是<br><span class="bold">想去海边</span>
   </div>
@@ -289,10 +289,10 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 村上 ===== 站酷小薇体 -->
+<!-- ===== 村上 ===== -->
 <div class="sec" data-s="15">
-  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);opacity:.02" data-py=".15">森</div>
-  <div class="illust">📚☕</div>
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);opacity:.02" data-py=".5">森</div>
+  <div class="illust" data-speed=".3">📚☕</div>
   <div class="tag c2" style="letter-spacing:4px;opacity:.18;text-align:left;align-self:flex-start">LITERATURE</div>
   <div class="a c4 f-xw" style="font-size:clamp(22px,6.5vw,38px);line-height:1.6;text-align:left;align-self:flex-start">
     夏天是在旧书店翻到<br>一本<span class="bold">上一个人留了笔记的书</span>
@@ -302,10 +302,10 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 海洋 ===== 站酷小薇体 -->
+<!-- ===== 海洋 ===== -->
 <div class="sec" data-s="16">
-  <div class="a w c9" style="font-size:clamp(160px,45vw,360px);top:-10%;left:-20%;opacity:.02" data-py=".3">海</div>
-  <div class="illust" style="font-size:clamp(40px,12vw,68px)">🐋🫧</div>
+  <div class="a w c9" style="font-size:clamp(160px,45vw,360px);top:-10%;left:-20%;opacity:.02" data-py=".8">海</div>
+  <div class="illust" data-speed=".2" style="font-size:clamp(40px,12vw,68px)">🐋🫧</div>
   <div class="a c-sky f-xw" style="font-size:clamp(22px,6vw,36px);line-height:1.6">
     夏天是<br>潜到水下才发现<br><span class="bold">声音都变轻了</span>
   </div>
@@ -315,9 +315,9 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 胶片 ===== 阿里巴巴普惠体 -->
+<!-- ===== 胶片 ===== -->
 <div class="sec" data-s="17">
-  <div class="deco">
+  <div class="deco" data-speed=".3">
     <span style="width:24px;height:32px;border:1px solid #0E4D64"></span>
     <span style="width:24px;height:32px;border:1px solid #0E4D64;background:#0E4D64;opacity:.2"></span>
     <span style="width:24px;height:32px;border:1px solid #0E4D64;background:#0E4D64;opacity:.12"></span>
@@ -332,10 +332,10 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 凌晨 ===== 站酷快乐体 -->
+<!-- ===== 凌晨 ===== -->
 <div class="sec" data-s="18">
-  <div class="a w c5" style="font-size:clamp(120px,35vw,300px);bottom:5%;right:-15%;opacity:.015" data-py=".1">夜</div>
-  <div class="illust">🌙💬✨</div>
+  <div class="a w c5" style="font-size:clamp(120px,35vw,300px);bottom:5%;right:-15%;opacity:.015" data-py=".55">夜</div>
+  <div class="illust" data-speed=".25">🌙💬✨</div>
   <div class="a c-lilac f-kl" style="font-size:clamp(22px,6.5vw,40px);line-height:1.5">
     夏天是<br>凌晨三点还在聊天<br><span class="bold">第二天全忘了</span>
   </div>
@@ -345,11 +345,11 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 宫崎骏 ===== 阿里巴巴普惠体 -->
+<!-- ===== 宫崎骏 ===== -->
 <div class="sec" data-s="19">
-  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);opacity:.025" data-py=".2">夏</div>
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);opacity:.025" data-py=".7">夏</div>
   <div class="f-xw" style="font-size:clamp(11px,3vw,13px);opacity:.18;text-decoration:line-through;color:#A78BFA">夏天是</div>
-  <div class="illust" style="font-size:clamp(36px,10vw,60px)">🍃🌀☁️</div>
+  <div class="illust" data-speed=".2">🍃🌀☁️</div>
   <div class="a c-mint" style="font-size:clamp(30px,9vw,60px);line-height:1.2">
     夏天是<br>记忆最好的季节<br><span class="strike" style="font-size:.55em;opacity:.2">其实是</span>
   </div>
@@ -359,7 +359,7 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 转折 ===== 思源宋体 -->
+<!-- ===== 转折 ===== -->
 <div class="sec" data-s="20">
   <div class="a c6 f-ss" style="font-size:clamp(60px,18vw,140px);line-height:.95">夏天<br>是</div>
   <div class="exp">
@@ -370,7 +370,7 @@ body{font-family:"Alibaba PuHuiTi 2.0","Noto Sans SC",-apple-system,sans-serif;-
   </div>
 </div>
 
-<!-- ===== 结尾 ===== 思源宋体 -->
+<!-- ===== 结尾 ===== -->
 <div class="sec" data-s="21" style="min-height:40vh;justify-content:center">
   <div class="a c6 f-ss" style="font-size:clamp(36px,10vw,72px);letter-spacing:.1em">夏天是</div>
   <div style="margin-top:16px;font-size:clamp(10px,2.8vw,13px);font-weight:300;letter-spacing:4px;opacity:.2;color:#3D5A80">你现在正在经历的这一切</div>
@@ -390,21 +390,70 @@ const exps=document.querySelectorAll('.exp');
 const eObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.35});
 exps.forEach(e=>eObs.observe(e));
 
-// 视差
-const pys=document.querySelectorAll('[data-py]');
+// ===== 三层视差系统 =====
 const bar=document.getElementById('bar');
+const bg=document.querySelector('.bg');
+
+// 缓存DOM引用，避免每次scroll都querySelector
+const watermarks=document.querySelectorAll('[data-py]');
+const midElements=document.querySelectorAll('.illust,.illust-sm,.deco');
+const foregrounds=document.querySelectorAll('.sec');
+
 function onScroll(){
-  const sy=window.scrollY,wh=window.innerHeight;
-  pys.forEach(el=>{
+  const sy=window.scrollY;
+  const wh=window.innerHeight;
+  const maxScroll=document.documentElement.scrollHeight-wh;
+  const progress=maxScroll>0?sy/maxScroll:0;
+
+  // ① 背景层：色调随滚动变化
+  bg.style.filter=`hue-rotate(${progress*30}deg)`;
+
+  // ② 背景水印层：最慢速视差（几乎不动，在背景上缓缓漂移）
+  watermarks.forEach(el=>{
     const r=el.parentElement.getBoundingClientRect();
     const p=(wh-r.top)/(wh+r.height);
     const py=parseFloat(el.dataset.py)||.2;
-    el.style.transform=`translateY(${(p-.5)*py*100}px) ${el.dataset.extra||''}`;
+    const offset=(p-.5)*py*150; // 幅度加大到150
+    el.style.transform=`translateY(${offset}px)`;
   });
-  const sh=document.documentElement.scrollHeight-wh;
-  bar.style.width=sh>0?(sy/sh*100)+'%':'0%';
+
+  // ③ 中景层：emoji/插画/装饰，中速视差
+  midElements.forEach(el=>{
+    const r=el.getBoundingClientRect();
+    // 只处理在视口附近的元素
+    if(r.bottom<-200||r.top>wh+200){el.style.transform='';return}
+    const speed=parseFloat(el.dataset.speed)||.3;
+    const center=(wh/2-r.top-r.height/2)/wh;
+    el.style.transform=`translateY(${center*speed*80}px)`;
+  });
+
+  // ④ 前景层：sec整体视差（文字段落，较快速度）
+  foregrounds.forEach(sec=>{
+    const r=sec.getBoundingClientRect();
+    if(r.bottom<-100||r.top>wh+100)return;
+    const center=(wh/2-r.top-r.height/2)/wh;
+    // 文字有微微的视差偏移，但比emoji快
+    sec.style.setProperty('--fy',`${center*15}px`);
+  });
+
+  // 进度条
+  bar.style.width=progress*100+'%';
 }
-window.addEventListener('scroll',onScroll,{passive:true});
+
+// 用 requestAnimationFrame 保证滚动流畅
+let ticking=false;
+window.addEventListener('scroll',function(){
+  if(!ticking){
+    requestAnimationFrame(function(){
+      onScroll();
+      ticking=false;
+    });
+    ticking=true;
+  }
+},{passive:true});
+
+// 初始调用一次
+onScroll();
 </script>
 </body>
 </html>
