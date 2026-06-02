@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>夏天是</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&family=Noto+Serif+SC:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:#FFFFFF}
+
+/* 背景纹理 */
+.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,215,225,0.05) 3px,rgba(200,215,225,0.05) 4px)}
+
+/* 进度条 */
+.bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:999;background:rgba(0,0,0,0.04)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2E8B7A,#1ABC9C);transition:width .15s linear}
+
+/* 滚动容器 */
+.wrap{position:relative;z-index:1;width:100%}
+
+/* 每段 */
+.sec{padding:44px 28px;position:relative;display:flex;flex-direction:column;align-items:center;
+  opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.sec.in{opacity:1;transform:translateY(0)}
+
+/* 滚入展开 */
+.exp{max-height:0;overflow:hidden;opacity:0;transition:max-height .6s cubic-bezier(.25,.46,.45,.94),opacity .5s ease}
+.exp.on{max-height:600px;opacity:1}
+
+/* 锚点 */
+.a{font-weight:900;line-height:1;letter-spacing:-.02em;text-align:center}
+.a.v{writing-mode:vertical-rl;letter-spacing:.12em;line-height:1.4}
+.a.w{position:absolute;font-weight:900;opacity:.035;pointer-events:none;letter-spacing:.05em}
+
+/* 颜色 */
+.c1{color:#1B6B5A}.c2{color:#2E8B7A}.c3{color:#3A98B9}.c4{color:#1A3A5C}.c5{color:#E85D4A}
+.c6{color:#1ABC9C}.c7{color:#0E4D64}.c8{color:#85C1E9}.c9{color:#5499C7}
+
+.tag{font-size:11px;letter-spacing:3px;opacity:.3;text-align:center;margin-bottom:8px}
+.b{font-size:clamp(13px,3.5vw,15px);font-weight:300;line-height:2;opacity:.55;text-align:center;max-width:340px}
+.strike{text-decoration:line-through;opacity:.3}
+.bold{font-weight:700}
+
+/* 插画元素 */
+.illust{font-size:clamp(48px,14vw,80px);line-height:1;text-align:center;margin:8px 0}
+.illust-sm{font-size:clamp(28px,8vw,44px);line-height:1;text-align:center}
+.deco{display:flex;gap:4px;justify-content:center;margin:8px 0}
+.deco span{display:inline-block;border-radius:2px;opacity:.15}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="wrap">
+
+<!-- ===== 封面 ===== -->
+<div class="sec" data-s="0" style="min-height:70vh;justify-content:center">
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:-5%;left:50%;transform:translateX(-50%)" data-py=".3">夏天是</div>
+  <div class="a c2" style="font-size:clamp(80px,24vw,180px);letter-spacing:.06em">
+    <span style="color:#1ABC9C">夏</span><span style="color:#3A98B9">天</span><span style="color:#1B6B5A">是</span>
+  </div>
+  <div class="tag c4" style="opacity:.2;margin-top:28px">一部没有片尾字幕的电影</div>
+</div>
+
+<!-- ===== 西瓜 ===== -->
+<div class="sec" data-s="1">
+  <div class="illust">🍉</div>
+  <div class="a c5" style="font-size:clamp(32px,9vw,60px);margin:4px 0">
+    夏天是<br>切开西瓜<span class="bold">刀锋偏了一度</span>
+  </div>
+  <div class="exp">
+    <div class="b">那道裂口自己炸开的声音<br>像《一一》里那个长镜头——<br>你以为在拍日常<br>其实在拍一个不会重来的下午</div>
+  </div>
+</div>
+
+<!-- ===== 空调 ===== -->
+<div class="sec" data-s="2">
+  <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px">
+    <div class="a c3" style="font-size:clamp(60px,18vw,140px);line-height:1">22</div>
+    <div style="font-size:clamp(16px,4vw,24px);font-weight:300;opacity:.25;color:#3A98B9">°C</div>
+    <div style="font-size:clamp(28px,8vw,48px);margin-left:8px">🧊</div>
+  </div>
+  <div class="a c4" style="font-size:clamp(22px,6vw,36px);line-height:1.5">
+    夏天是<br>空调开到22度<span class="bold">盖被子</span>
+  </div>
+  <div class="exp">
+    <div class="b">侯孝贤说过："电影不是拍你想看到的<br>是拍你感受到的。"<br>22度的房间盖着被子<br>这就是夏天的蒙太奇</div>
+  </div>
+</div>
+
+<!-- ===== 冰可乐 ===== -->
+<div class="sec" data-s="3" style="flex-direction:row;gap:16px;align-items:center">
+  <div class="a v c3" style="font-size:clamp(20px,6vw,36px);letter-spacing:.15em">冰可乐</div>
+  <div>
+    <div class="illust-sm" style="text-align:left">🥤</div>
+    <div class="a c1" style="font-size:clamp(20px,5.5vw,32px);text-align:left;line-height:1.5;margin:4px 0">
+      夏天是第一口气泡<span class="bold">炸开</span>
+    </div>
+    <div class="exp">
+      <div class="b" style="text-align:left;max-width:240px">是枝裕和的镜头里<br>没有配乐的时候<br>你只能听见<br>冰箱门打开的那声"嗡"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 穿搭 ===== -->
+<div class="sec" data-s="4">
+  <div style="font-size:clamp(12px,3.2vw,14px);opacity:.2;text-decoration:line-through;color:#3D5A80">出门前纠结穿什么</div>
+  <div class="a c6" style="font-size:clamp(36px,10vw,72px);margin:4px 0">
+    夏天是<br>出门后<span class="bold">所有人都穿得很随便</span>
+  </div>
+  <div class="illust-sm" style="margin-top:4px">👕🩳🩴</div>
+  <div class="exp">
+    <div class="b">像《小偷家族》里那场烟花<br>没有人看见，但每个人都听见了</div>
+  </div>
+</div>
+
+<!-- ===== 午睡 ===== -->
+<div class="sec" data-s="5">
+  <div class="a w c8" style="font-size:clamp(100px,28vw,240px);top:10%;left:50%;transform:translateX(-50%);color:#85C1E9;opacity:.05" data-py=".1">15:47</div>
+  <div class="illust-sm">😴</div>
+  <div class="a c4" style="font-size:clamp(24px,7vw,44px);line-height:1.5">
+    夏天是<br>午觉醒来<span class="bold">分不清下午还是黄昏</span>
+  </div>
+  <div class="exp">
+    <div class="b">塔可夫斯基的潜意识里<br>时间本来就不是线性的<br>那种恍惚感就是夏天给你的<br><span class="bold c2">一段免费的失忆</span></div>
+  </div>
+</div>
+
+<!-- ===== 蝉鸣 ===== -->
+<div class="sec" data-s="6">
+  <div class="a w c2" style="font-size:clamp(160px,45vw,360px);top:-5%;left:-15%;transform:rotate(-12deg)" data-py=".4">鸣</div>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <span style="font-size:clamp(14px,3.8vw,18px)">🦗</span>
+    <span style="font-size:clamp(10px,2.8vw,13px);opacity:.3;color:#2E8B7A;letter-spacing:3px">CHIRPING</span>
+    <span style="font-size:clamp(14px,3.8vw,18px)">🦗</span>
+  </div>
+  <div class="a c1" style="font-size:clamp(28px,8vw,52px);line-height:1.3">
+    夏天是<br>蝉鸣大到<br><span class="bold">听不见自己</span>
+  </div>
+  <div class="exp">
+    <div class="b">王家卫让梁朝伟对着毛巾说话<br>环境太吵了<br>你反而只能听见自己</div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #2E8B7A;border-radius:20px;padding:3px 10px;color:#2E8B7A">重庆森林 · 1994</div>
+  </div>
+</div>
+
+<!-- ===== 晚风 ===== -->
+<div class="sec" data-s="7">
+  <div class="illust">🌬️🍃</div>
+  <div class="a c1" style="font-size:clamp(22px,6vw,36px);line-height:1.6">
+    夏天是<br>晚风吹过来<br>你突然想给<span class="bold">很久没联系的人</span><br>发一条消息
+  </div>
+  <div class="exp">
+    <div class="b">《情书》里柏原崇站在窗边<br>风翻动白纱帘<br>有些话不用说出口<br>晚风替你说了</div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #2E8B7A;border-radius:20px;padding:3px 10px;color:#2E8B7A">情书 · 1995</div>
+  </div>
+</div>
+
+<!-- ===== 夜市 ===== -->
+<div class="sec" data-s="8">
+  <div class="a w c7" style="font-size:clamp(180px,50vw,400px);top:5%;left:50%;transform:translateX(-50%);color:#0E4D64;opacity:.02" data-py=".35">市</div>
+  <div class="illust">🏮🍢🧋</div>
+  <div class="a c4" style="font-size:clamp(26px,7.5vw,48px);line-height:1.4">
+    夏天是<br>夜市的灯光<span class="bold">把影子拉得很长</span>
+  </div>
+  <div class="exp">
+    <div class="b">岩井俊二说"电影是白日梦"<br>夜市就是现实版的白日梦<br>烟火气里藏着<br><span class="bold">每个人不愿意醒来的理由</span></div>
+  </div>
+</div>
+
+<!-- ===== 四季 ===== -->
+<div class="sec" data-s="9">
+  <div style="text-align:center">
+    <div class="tag c2" style="letter-spacing:5px;font-size:clamp(12px,3.2vw,15px);opacity:.18">春 天 在 准 备</div>
+    <div class="tag c2" style="letter-spacing:5px;font-size:clamp(12px,3.2vw,15px);opacity:.18;margin-top:4px">秋 天 在 收 尾</div>
+    <div class="illust-sm" style="margin:8px 0">🌱</div>
+    <div class="a c6" style="font-size:clamp(30px,9vw,60px)">夏天是<span class="bold">活着</span></div>
+  </div>
+  <div class="exp">
+    <div class="b">侯孝贤拍《悲情城市》用了98个长镜头<br>夏天不需要长镜头<br>它本身就是一个<br><span class="bold c2">没有剪辑点的此刻</span></div>
+  </div>
+</div>
+
+<!-- ===== 热 ===== -->
+<div class="sec" data-s="10">
+  <div class="illust">🥵☀️</div>
+  <div class="a c5" style="font-size:clamp(28px,8vw,52px);line-height:1.3">
+    夏天是<br>热到<span class="strike">连思考都是奢侈</span>
+  </div>
+  <div class="exp">
+    <div class="b">但最好的念头都是在夏天冒出来的<br>像《阳光灿烂的日子》里<br>马小军站在屋顶上<br>什么都没想<span class="bold">但什么都想到了</span></div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #E85D4A;border-radius:20px;padding:3px 10px;color:#E85D4A">阳光灿烂的日子 · 1994</div>
+  </div>
+</div>
+
+<!-- ===== 没有结局 ===== -->
+<div class="sec" data-s="11" style="flex-direction:row;gap:20px;align-items:center">
+  <div class="a v c2" style="font-size:clamp(18px,5.5vw,34px);letter-spacing:.12em;line-height:1.6">没有结局的电影</div>
+  <div>
+    <div class="a c1" style="font-size:clamp(22px,6.5vw,40px);text-align:left;line-height:1.5">
+      夏天是<br><span class="strike">那些</span>故事还没讲完
+    </div>
+    <div class="exp">
+      <div class="b" style="text-align:left;max-width:220px">好的电影不给结局<br>好的夏天也是</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 以你的名字呼唤我 ===== -->
+<div class="sec" data-s="12">
+  <div class="a w c5" style="font-size:clamp(100px,28vw,220px);top:0;right:-15%;color:#E8A838;opacity:.035;transform:rotate(5deg)" data-py=".2">夏</div>
+  <div class="tag" style="color:#BF360C;letter-spacing:3px">SUMMER · ITALY</div>
+  <div class="illust">🍑🏊‍♂️🚴</div>
+  <div class="a c5" style="font-size:clamp(24px,7vw,44px);line-height:1.5">
+    夏天是<br>桃子汁水顺着手指往下淌<br><span class="strike">你假装没注意到</span>
+  </div>
+  <div class="exp">
+    <div class="b">《以你的名字呼唤我》<br>意大利小镇的夏天<br>所有的心动都藏在<br>水果、泳池和<span class="bold c2">骑车经过的石板路</span></div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #E85D4A;border-radius:20px;padding:3px 10px;color:#E85D4A">Call Me by Your Name · 2017</div>
+  </div>
+</div>
+
+<!-- ===== 莎翁 ===== -->
+<div class="sec" data-s="13">
+  <div class="illust" style="font-size:clamp(36px,10vw,64px)">✉️🪶</div>
+  <div class="tag c4" style="letter-spacing:4px;opacity:.12">SHAKESPEARE · SONNET 18</div>
+  <div style="font-family:'Noto Serif SC',Georgia,serif;font-size:clamp(15px,4.2vw,20px);line-height:2;color:#1A3A5C;opacity:.65;text-align:center;max-width:320px">
+    夏天怎能与你相比<br>你比夏天更可爱也更温和
+  </div>
+  <div style="font-family:Georgia,serif;font-size:clamp(10px,2.8vw,13px);font-style:italic;opacity:.2;margin-top:8px;text-align:center;color:#1A3A5C">
+    Shall I compare thee to a summer's day?<br>Thou art more lovely and more temperate.
+  </div>
+  <div class="exp">
+    <div class="b">四百年前莎翁就写明白了<br>夏天不值得被比较<br><span class="bold c2">你比夏天更值得被记住</span></div>
+  </div>
+</div>
+
+<!-- ===== 想去海边 ===== -->
+<div class="sec" data-s="14">
+  <div class="illust" style="font-size:clamp(40px,12vw,72px)">🌊🤖🏖️</div>
+  <div class="a c3" style="font-size:clamp(36px,10vw,72px);line-height:1.1">
+    夏天是<br><span class="bold">想去海边</span>
+  </div>
+  <div style="font-size:clamp(13px,3.5vw,16px);opacity:.4;text-align:center;max-width:300px;line-height:1.8;color:#1A3A5C;margin-top:8px">
+    "顺便把所有的不开心都留在那里"
+  </div>
+  <div class="exp">
+    <div class="b">去不了也没关系<br><span class="bold c2">耳机一戴，哪里都是海</span><br>像《机器人之梦》里<br>那个在沙滩上等待的夏天</div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #3A98B9;border-radius:20px;padding:3px 10px;color:#3A98B9">夏日入侵企画 · 想去海边</div>
+  </div>
+</div>
+
+<!-- ===== 村上 ===== -->
+<div class="sec" data-s="15">
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);color:#2E8B7A;opacity:.02" data-py=".15">森</div>
+  <div class="illust">📚☕</div>
+  <div class="tag c2" style="letter-spacing:4px;opacity:.18;text-align:left;align-self:flex-start">LITERATURE</div>
+  <div class="a c4" style="font-size:clamp(22px,6.5vw,38px);line-height:1.6;text-align:left;align-self:flex-start">
+    夏天是在旧书店翻到<br>一本<span class="bold">上一个人留了笔记的书</span>
+  </div>
+  <div class="exp">
+    <div class="b" style="text-align:left;max-width:280px">村上春树写过<br>"每个人都有属于自己的一片森林"<br>翻开一本二手书<br>你和一个陌生人<br><span class="bold c2">在同一页上相遇了</span></div>
+  </div>
+</div>
+
+<!-- ===== 海洋 ===== -->
+<div class="sec" data-s="16">
+  <div class="a w c9" style="font-size:clamp(160px,45vw,360px);top:-10%;left:-20%;color:#1565C0;opacity:.02" data-py=".3">海</div>
+  <div class="illust" style="font-size:clamp(40px,12vw,68px)">🐋🫧</div>
+  <div class="a c3" style="font-size:clamp(22px,6vw,36px);line-height:1.6">
+    夏天是<br>潜到水下才发现<br><span class="bold">声音都变轻了</span>
+  </div>
+  <div class="exp">
+    <div class="b">雅克·贝汉拍《海洋》时说<br>"水下的世界是另一个宇宙"<br>夏天最好的礼物<br>就是偶尔能潜进去<br>哪怕只是把脸埋进一盆冷水里</div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #5499C7;border-radius:20px;padding:3px 10px;color:#5499C7">海洋 · Océans · 2009</div>
+  </div>
+</div>
+
+<!-- ===== 胶片 ===== -->
+<div class="sec" data-s="17">
+  <div class="deco">
+    <span style="width:24px;height:32px;border:1px solid #0E4D64"></span>
+    <span style="width:24px;height:32px;border:1px solid #0E4D64;background:#0E4D64;opacity:.2"></span>
+    <span style="width:24px;height:32px;border:1px solid #0E4D64;background:#0E4D64;opacity:.12"></span>
+    <span style="width:24px;height:32px;border:1px solid #0E4D64"></span>
+    <span style="width:24px;height:32px;border:1px solid #0E4D64;background:#0E4D64;opacity:.18"></span>
+  </div>
+  <div class="a c7" style="font-size:clamp(18px,5vw,28px);line-height:1.7">
+    夏天是<br><span class="strike">手机里拍了一千张</span><br><span class="bold">胶片机只舍得按三十下</span>
+  </div>
+  <div class="exp">
+    <div class="b">每一张都不能删所以每一张都在认真选<br>日子越短你越想把<br>每一帧都<span class="bold">过成定格</span></div>
+  </div>
+</div>
+
+<!-- ===== 凌晨 ===== -->
+<div class="sec" data-s="18">
+  <div class="a w c5" style="font-size:clamp(120px,35vw,300px);bottom:5%;right:-15%;color:#4A1942;opacity:.015" data-py=".1">夜</div>
+  <div class="illust">🌙💬✨</div>
+  <div class="a c3" style="font-size:clamp(22px,6.5vw,40px);line-height:1.5">
+    夏天是<br>凌晨三点还在聊天<br><span class="bold">第二天全忘了</span>
+  </div>
+  <div class="exp">
+    <div class="b">《爱在黎明破晓前》<br>两个人在维也纳聊了一整夜<br>重要的从来不是聊了什么<br>而是那个凌晨<span class="bold c2">有人愿意陪你醒着</span></div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #3A98B9;border-radius:20px;padding:3px 10px;color:#3A98B9">Before Sunrise · 1995</div>
+  </div>
+</div>
+
+<!-- ===== 宫崎骏 ===== -->
+<div class="sec" data-s="19">
+  <div class="a w c2" style="font-size:clamp(140px,40vw,320px);top:0;left:50%;transform:translateX(-50%);color:#2E8B7A;opacity:.025" data-py=".2">夏</div>
+  <div style="font-size:clamp(11px,3vw,13px);opacity:.18;text-decoration:line-through;color:#3D5A80">夏天是</div>
+  <div class="illust" style="font-size:clamp(36px,10vw,60px)">🍃🌀☁️</div>
+  <div class="a c2" style="font-size:clamp(30px,9vw,60px);line-height:1.2">
+    夏天是<br>记忆最好的季节<br><span class="strike" style="font-size:.55em;opacity:.2">其实是</span>
+  </div>
+  <div class="exp">
+    <div class="b">你记住了<strong>风扇转的圈数</strong><br><strong>汽水瓶壁上滑下的水珠</strong><br><strong>傍晚六点半天还没黑</strong><br>宫崎骏的夏天没有主角<br>每个镜头都是<span class="bold c2">正在消失的此刻</span></div>
+    <div style="display:inline-block;font-size:10px;letter-spacing:2px;opacity:.2;margin-top:10px;border:1px solid #2E8B7A;border-radius:20px;padding:3px 10px;color:#2E8B7A">千与千寻 · 2001</div>
+  </div>
+</div>
+
+<!-- ===== 转折 ===== -->
+<div class="sec" data-s="20">
+  <div class="a c6" style="font-size:clamp(60px,18vw,140px);line-height:.95">夏天<br>是</div>
+  <div class="exp">
+    <div class="b" style="opacity:.55;font-size:clamp(13px,3.8vw,16px)">
+      不是季节<br>是一种<span class="bold">叙事状态</span><br><br>
+      你在其中的时候以为只是普通星期二<br>离开之后才发现<br>那是整部电影里<span class="bold c2">最好的那场戏</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 结尾 ===== -->
+<div class="sec" data-s="21" style="min-height:40vh;justify-content:center">
+  <div class="a c6" style="font-size:clamp(36px,10vw,72px);letter-spacing:.1em">夏天是</div>
+  <div style="margin-top:16px;font-size:clamp(10px,2.8vw,13px);font-weight:300;letter-spacing:4px;opacity:.2;color:#3D5A80">你现在正在经历的这一切</div>
+  <div style="margin-top:40px;font-size:10px;letter-spacing:3px;opacity:.08;color:#3D5A80">END OF SUMMER</div>
+</div>
+
+</div>
+
+<script>
+// 场景淡入
+const secs=document.querySelectorAll('.sec');
+const sObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08});
+secs.forEach(s=>sObs.observe(s));
+
+// 内容滚到即展开
+const exps=document.querySelectorAll('.exp');
+const eObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.35});
+exps.forEach(e=>eObs.observe(e));
+
+// 视差
+const pys=document.querySelectorAll('[data-py]');
+const bar=document.getElementById('bar');
+function onScroll(){
+  const sy=window.scrollY,wh=window.innerHeight;
+  pys.forEach(el=>{
+    const r=el.parentElement.getBoundingClientRect();
+    const p=(wh-r.top)/(wh+r.height);
+    const py=parseFloat(el.dataset.py)||.2;
+    el.style.transform=`translateY(${(p-.5)*py*100}px) ${el.dataset.extra||''}`;
+  });
+  const sh=document.documentElement.scrollHeight-wh;
+  bar.style.width=sh>0?(sy/sh*100)+'%':'0%';
+}
+window.addEventListener('scroll',onScroll,{passactive:true});
+</script>
+</body>
+</html>
